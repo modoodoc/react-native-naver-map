@@ -17,6 +17,7 @@ const RNNaverMapViewTexture = Platform.select({
     ios: () => RNNaverMapView
 })();
 const RNNaverMapMarker = requireNativeComponent('RNNaverMapMarker');
+const RNNaverMapInfoWindow = requireNativeComponent('RNNaverMapInfoWindow');
 const RNNaverMapPathOverlay = requireNativeComponent('RNNaverMapPathOverlay');
 const RNNaverMapPolylineOverlay = requireNativeComponent('RNNaverMapPolylineOverlay');
 const RNNaverMapCircleOverlay = requireNativeComponent('RNNaverMapCircleOverlay');
@@ -245,9 +246,41 @@ export interface MarkerProps extends MapOverlay {
     };
 }
 
+export interface InfoWindowProps extends MapOverlay {
+    anchor?: { x: number; y: number };
+    pinColor?: string;
+    rotation?: number;
+    flat?: boolean;
+    image?: ImageSourcePropType;
+    width?: number;
+    height?: number;
+    alpha?: number;
+    animated?: boolean;
+    caption?: {
+        text?: string;
+        align?: Align;
+        textSize?: number;
+        color?: string;
+        haloColor?: string;
+    };
+    subCaption?: {
+        text?: string;
+        textSize?: number;
+        color?: number;
+        haloColor?: number;
+    };
+    text?: string;
+}
+
 export class Marker extends Component<MarkerProps> {
     render() {
         return <RNNaverMapMarker {...this.props} image={getImageUri(this.props.image)}/>
+    }
+}
+
+export class InfoWindow extends Component<InfoWindowProps> {
+    render() {
+        return <RNNaverMapInfoWindow {...this.props} image={getImageUri(this.props.image)}/>
     }
 }
 

@@ -6,6 +6,7 @@ const RNNaverMapViewTexture = Platform.select({
     ios: () => RNNaverMapView
 })();
 const RNNaverMapMarker = requireNativeComponent('RNNaverMapMarker');
+const RNNaverMapInfoWindow = requireNativeComponent('RNNaverMapInfoWindow');
 const RNNaverMapPathOverlay = requireNativeComponent('RNNaverMapPathOverlay');
 const RNNaverMapPolylineOverlay = requireNativeComponent('RNNaverMapPolylineOverlay');
 const RNNaverMapCircleOverlay = requireNativeComponent('RNNaverMapCircleOverlay');
@@ -107,6 +108,11 @@ export default class NaverMapView extends Component {
 export class Marker extends Component {
     render() {
         return React.createElement(RNNaverMapMarker, Object.assign({}, this.props, { image: getImageUri(this.props.image) }));
+    }
+}
+export class InfoWindow extends Component {
+    render() {
+        return React.createElement(RNNaverMapInfoWindow, Object.assign({}, this.props, { image: getImageUri(this.props.image) }));
     }
 }
 export class Circle extends Component {

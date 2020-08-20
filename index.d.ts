@@ -160,6 +160,37 @@ export interface MarkerProps extends MapOverlay {
 export declare class Marker extends Component<MarkerProps> {
     render(): JSX.Element;
 }
+export interface InfoWindowProps extends MapOverlay {
+    anchor?: {
+        x: number;
+        y: number;
+    };
+    pinColor?: string;
+    rotation?: number;
+    flat?: boolean;
+    image?: ImageSourcePropType;
+    width?: number;
+    height?: number;
+    alpha?: number;
+    animated?: boolean;
+    caption?: {
+        text?: string;
+        align?: Align;
+        textSize?: number;
+        color?: string;
+        haloColor?: string;
+    };
+    subCaption?: {
+        text?: string;
+        textSize?: number;
+        color?: number;
+        haloColor?: number;
+    };
+    text?: string;
+}
+export declare class InfoWindow extends Component<InfoWindowProps> {
+    render(): JSX.Element;
+}
 export interface CircleProps extends MapOverlay {
     radius?: number;
     color?: string;
