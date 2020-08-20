@@ -19,6 +19,7 @@ public class RNNaverMapPackage implements ReactPackage {
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
         return Arrays.asList(
+                new RNNaverMapInfoWindowManager(reactContext),
                 new RNNaverMapViewManager(reactContext),
                 new RNNaverMapViewTextureManager(reactContext),
                 new RNNaverMapPolylineOverlayManager(reactContext),
