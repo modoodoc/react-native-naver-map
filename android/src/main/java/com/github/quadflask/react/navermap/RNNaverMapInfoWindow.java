@@ -143,13 +143,14 @@ public class RNNaverMapInfoWindow extends ClickableRNNaverMapFeature<InfoWindow>
 
     public void setCustomView(View view) {
         if (view != null) {
-            feature.setAdapter(new InfoWindow.ViewAdapter() {
-                @NonNull
-                @Override
-                public View getView(@NonNull InfoWindow feature) {
-                    return view;
-                }
-            });
+//            feature.setAdapter(new InfoWindow.ViewAdapter() {
+//                @NonNull
+//                @Override
+//                public View getView(@NonNull InfoWindow feature) {
+//                    return view;
+//                }
+//            });
+            setImage(view);
         } else {
             Context context = getContext();
 
@@ -169,18 +170,27 @@ public class RNNaverMapInfoWindow extends ClickableRNNaverMapFeature<InfoWindow>
         setCustomView(child);
     }
 
-//    public void setImage() {
-//        OverlayImage overlayImage = getImage();
-//
-//        feature.setAdapter(new InfoWindow.Adapter() {
-//            @NonNull
-//            @Override
-//            public OverlayImage getImage(@NonNull InfoWindow feature) {
-//                return overlayImage;
-//            }
-//        });
-//    }
-//
+    public void setImage(View view) {
+        OverlayImage overlayImage = getImage(view);
+
+        feature.setAdapter(new InfoWindow.Adapter() {
+            @NonNull
+            @Override
+            public OverlayImage getImage(@NonNull InfoWindow feature) {
+                return overlayImage;
+            }
+        });
+    }
+
+    private OverlayImage getImage(View view) {
+        Bitmap bitmap = Bitmap.createBitmap(view.getLayoutParams().width, view.getLayoutParams().height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        view.layout(view.getLeft(), view.getTop(), view.getRight(), view.getBottom());
+        view.draw(canvas);
+
+        return OverlayImage.fromBitmap(bitmap);
+    }
+
 //    private OverlayImage getImage() {
 //        // creating a bitmap from an arbitrary view
 //        Bitmap viewBitmap = createDrawable();
@@ -191,7 +201,7 @@ public class RNNaverMapInfoWindow extends ClickableRNNaverMapFeature<InfoWindow>
 //        canvas.drawBitmap(viewBitmap, 0, 0, null);
 //        return OverlayImage.fromBitmap(combinedBitmap);
 //    }
-//
+
 //    private Bitmap createDrawable() {
 //        int width = this.width <= 0 ? 100 : this.width;
 //        int height = this.height <= 0 ? 100 : this.height;
