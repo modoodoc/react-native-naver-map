@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -96,5 +97,17 @@ public class RNNaverMapInfoWindowManager extends EventEmittableViewGroupManager<
     @ReactProp(name = "text")
     public void setText(RNNaverMapInfoWindow view, String str) {
         view.setText(str);
+    }
+
+    @Override
+    public void addView(RNNaverMapInfoWindow parent, View child, int index) {
+        super.addView(parent, child, index);
+        parent.setCustomView(child);
+    }
+
+    @Override
+    public void removeViewAt(RNNaverMapInfoWindow parent, int index) {
+        super.removeViewAt(parent, index);
+        parent.setCustomView(null);
     }
 }

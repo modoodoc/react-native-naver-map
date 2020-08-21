@@ -4,15 +4,19 @@ import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.PointF;
 import android.graphics.drawable.Animatable;
 import android.net.Uri;
 import android.util.Property;
+import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
+
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
@@ -33,6 +37,7 @@ import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.overlay.InfoWindow;
+import com.naver.maps.map.overlay.OverlayImage;
 //import com.naver.maps.map.overlay.
 // import com.naver.maps.map.overlay.OverlayImage;
 // import com.naver.maps.map.overlay.Align;
@@ -42,6 +47,9 @@ public class RNNaverMapInfoWindow extends ClickableRNNaverMapFeature<InfoWindow>
     private boolean animated = false;
     private int duration = 500;
     private TimeInterpolator easingFunction;
+//    private int width;
+//    private int height;
+//    private Bitmap mLastBitmapCreated = null;
 
     public RNNaverMapInfoWindow(EventEmittable emitter, Context context) {
         super(emitter, context);
@@ -120,14 +128,88 @@ public class RNNaverMapInfoWindow extends ClickableRNNaverMapFeature<InfoWindow>
     }
 
     public void setText(String str) {
-        Context context = getContext();
+        if (str != null) {
+            Context context = getContext();
 
-        feature.setAdapter(new InfoWindow.DefaultTextAdapter(context) {
-            @NonNull
-            @Override
-            public CharSequence getText(@NonNull InfoWindow feature) {
-                return str;
-            }
-        });
+            feature.setAdapter(new InfoWindow.DefaultTextAdapter(context) {
+                @NonNull
+                @Override
+                public CharSequence getText(@NonNull InfoWindow feature) {
+                    return str;
+                }
+            });
+        }
     }
+
+    public void setCustomView(View view) {
+        if (view != null) {
+            feature.setAdapter(new InfoWindow.ViewAdapter() {
+                @NonNull
+                @Override
+                public View getView(@NonNull InfoWindow feature) {
+                    return view;
+                }
+            });
+        } else {
+            Context context = getContext();
+
+            feature.setAdapter(new InfoWindow.DefaultTextAdapter(context) {
+                @NonNull
+                @Override
+                public CharSequence getText(@NonNull InfoWindow feature) {
+                    return "";
+                }
+            });
+        }
+    }
+
+    @Override
+    public void addView(View child, int index) {
+        super.addView(child, index);
+        setCustomView(child);
+    }
+
+//    public void setImage() {
+//        OverlayImage overlayImage = getImage();
+//
+//        feature.setAdapter(new InfoWindow.Adapter() {
+//            @NonNull
+//            @Override
+//            public OverlayImage getImage(@NonNull InfoWindow feature) {
+//                return overlayImage;
+//            }
+//        });
+//    }
+//
+//    private OverlayImage getImage() {
+//        // creating a bitmap from an arbitrary view
+//        Bitmap viewBitmap = createDrawable();
+//        int width = viewBitmap.getWidth();
+//        int height = viewBitmap.getHeight();
+//        Bitmap combinedBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+//        Canvas canvas = new Canvas(combinedBitmap);
+//        canvas.drawBitmap(viewBitmap, 0, 0, null);
+//        return OverlayImage.fromBitmap(combinedBitmap);
+//    }
+//
+//    private Bitmap createDrawable() {
+//        int width = this.width <= 0 ? 100 : this.width;
+//        int height = this.height <= 0 ? 100 : this.height;
+//        this.buildDrawingCache();
+//
+//        // Do not create the doublebuffer-bitmap each time. reuse it to save memory.
+//        Bitmap bitmap = mLastBitmapCreated;
+//
+//        if (bitmap == null || bitmap.isRecycled() || bitmap.getWidth() != width || bitmap.getHeight() != height) {
+//            bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+//            mLastBitmapCreated = bitmap;
+//        } else {
+//            bitmap.eraseColor(Color.TRANSPARENT);
+//        }
+//
+//        Canvas canvas = new Canvas(bitmap);
+//        this.draw(canvas);
+//
+//        return bitmap;
+//    }
 }
