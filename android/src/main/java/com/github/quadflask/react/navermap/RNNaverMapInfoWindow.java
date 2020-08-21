@@ -47,9 +47,9 @@ public class RNNaverMapInfoWindow extends ClickableRNNaverMapFeature<InfoWindow>
     private boolean animated = false;
     private int duration = 500;
     private TimeInterpolator easingFunction;
-//    private int width;
-//    private int height;
-//    private Bitmap mLastBitmapCreated = null;
+    private int width;
+    private int height;
+    private Bitmap mLastBitmapCreated = null;
 
     public RNNaverMapInfoWindow(EventEmittable emitter, Context context) {
         super(emitter, context);
@@ -143,14 +143,19 @@ public class RNNaverMapInfoWindow extends ClickableRNNaverMapFeature<InfoWindow>
 
     public void setCustomView(View view) {
         if (view != null) {
-//            feature.setAdapter(new InfoWindow.ViewAdapter() {
-//                @NonNull
-//                @Override
-//                public View getView(@NonNull InfoWindow feature) {
-//                    return view;
-//                }
-//            });
-            setImage(view);
+            int width = this.width <= 0 ? 100 : this.width;
+            int height = this.height <= 0 ? 100 : this.height;
+
+            feature.setAdapter(new InfoWindow.ViewAdapter() {
+                @NonNull
+                @Override
+                public View getView(@NonNull InfoWindow feature) {
+                    view.setLayoutParams(new LayoutParams(width, height));
+
+                    return view;
+                }
+            });
+//            setImage(view);
         } else {
             Context context = getContext();
 
@@ -162,6 +167,13 @@ public class RNNaverMapInfoWindow extends ClickableRNNaverMapFeature<InfoWindow>
                 }
             });
         }
+    }
+
+    public void update(int width, int height, RNNaverMapInfoWindow view) {
+        this.width = width;
+        this.height = height;
+
+        setCustomView(view);
     }
 
     @Override
@@ -205,24 +217,24 @@ public class RNNaverMapInfoWindow extends ClickableRNNaverMapFeature<InfoWindow>
 //        return OverlayImage.fromBitmap(combinedBitmap);
 //    }
 
-//    private Bitmap createDrawable() {
-//        int width = this.width <= 0 ? 100 : this.width;
-//        int height = this.height <= 0 ? 100 : this.height;
-//        this.buildDrawingCache();
-//
-//        // Do not create the doublebuffer-bitmap each time. reuse it to save memory.
-//        Bitmap bitmap = mLastBitmapCreated;
-//
-//        if (bitmap == null || bitmap.isRecycled() || bitmap.getWidth() != width || bitmap.getHeight() != height) {
-//            bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-//            mLastBitmapCreated = bitmap;
-//        } else {
-//            bitmap.eraseColor(Color.TRANSPARENT);
-//        }
-//
-//        Canvas canvas = new Canvas(bitmap);
-//        this.draw(canvas);
-//
-//        return bitmap;
-//    }
+    private Bitmap createDrawable() {
+        int width = this.width <= 0 ? 100 : this.width;
+        int height = this.height <= 0 ? 100 : this.height;
+        this.buildDrawingCache();
+
+        // Do not create the doublebuffer-bitmap each time. reuse it to save memory.
+        Bitmap bitmap = mLastBitmapCreated;
+
+        if (bitmap == null || bitmap.isRecycled() || bitmap.getWidth() != width || bitmap.getHeight() != height) {
+            bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            mLastBitmapCreated = bitmap;
+        } else {
+            bitmap.eraseColor(Color.TRANSPARENT);
+        }
+
+        Canvas canvas = new Canvas(bitmap);
+        this.draw(canvas);
+
+        return bitmap;
+    }
 }

@@ -123,13 +123,13 @@ public class RNNaverMapInfoWindowManager extends EventEmittableViewGroupManager<
         return new SizeReportingShadowNode2();
     }
 
-//    @Override
-//    public void updateExtraData(RNNaverMapInfoWindow view, Object extraData) {
-//        // This method is called from the shadow node with the width/height of the rendered
-//        // marker view.
-//        HashMap<String, Float> data = (HashMap<String, Float>) extraData;
-//        float width = data.get("width");
-//        float height = data.get("height");
-//        view.update((int) width, (int) height);
-//    }
+    @Override
+    public void updateExtraData(RNNaverMapInfoWindow view, Object extraData) {
+        // This method is called from the shadow node with the width/height of the rendered
+        // marker view.
+        HashMap<String, Float> data = (HashMap<String, Float>) extraData;
+        float width = data.get("width");
+        float height = data.get("height");
+        view.update((int) width, (int) height, view);
+    }
 }
