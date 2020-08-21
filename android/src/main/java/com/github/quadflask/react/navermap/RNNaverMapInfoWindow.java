@@ -183,7 +183,10 @@ public class RNNaverMapInfoWindow extends ClickableRNNaverMapFeature<InfoWindow>
     }
 
     private OverlayImage getImage(View view) {
-        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+        int width = view.getWidth() <= 0 ? 100 : view.getWidth();
+        int height = view.getHeight() <= 0 ? 100 : view.getHeight();
+
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         view.layout(view.getLeft(), view.getTop(), view.getRight(), view.getBottom());
         view.draw(canvas);
