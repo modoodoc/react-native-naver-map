@@ -12,13 +12,17 @@ import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.uimanager.LayoutShadowNode;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.naver.maps.map.overlay.Align;
 
+import com.airbnb.android.react.maps.SizeReportingShadowNode2;
 import static com.github.quadflask.react.navermap.ReactUtil.parseAlign;
 import static com.github.quadflask.react.navermap.ReactUtil.parseColorString;
 import static com.github.quadflask.react.navermap.ReactUtil.toNaverLatLng;
+
+import java.util.HashMap;
 
 public class RNNaverMapInfoWindowManager extends EventEmittableViewGroupManager<RNNaverMapInfoWindow> {
     private static final Align DEFAULT_CAPTION_ALIGN = Align.Bottom;
@@ -110,4 +114,22 @@ public class RNNaverMapInfoWindowManager extends EventEmittableViewGroupManager<
         super.removeViewAt(parent, index);
         parent.setCustomView(null);
     }
+
+    @Override
+    public LayoutShadowNode createShadowNodeInstance() {
+        // we use a custom shadow node that emits the width/height of the view
+        // after layout with the updateExtraData method. Without this, we can't generate
+        // a bitmap of the appropriate width/height of the rendered view.
+        return new SizeReportingShadowNode2();
+    }
+
+//    @Override
+//    public void updateExtraData(RNNaverMapInfoWindow view, Object extraData) {
+//        // This method is called from the shadow node with the width/height of the rendered
+//        // marker view.
+//        HashMap<String, Float> data = (HashMap<String, Float>) extraData;
+//        float width = data.get("width");
+//        float height = data.get("height");
+//        view.update((int) width, (int) height);
+//    }
 }
