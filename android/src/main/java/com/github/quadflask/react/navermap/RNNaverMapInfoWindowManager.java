@@ -103,6 +103,16 @@ public class RNNaverMapInfoWindowManager extends EventEmittableViewGroupManager<
         view.setText(str);
     }
 
+    @ReactProp(name = "childWidth")
+    public void setChildWidth(RNNaverMapInfoWindow view, int width) {
+        view.setChildWidth(width);
+    }
+
+    @ReactProp(name = "childHeight")
+    public void setChildHeight(RNNaverMapInfoWindow view, int height) {
+        view.setChildHeight(height);
+    }
+
     @Override
     public void addView(RNNaverMapInfoWindow parent, View child, int index) {
         super.addView(parent, child, index);
@@ -113,6 +123,11 @@ public class RNNaverMapInfoWindowManager extends EventEmittableViewGroupManager<
     public void removeViewAt(RNNaverMapInfoWindow parent, int index) {
         super.removeViewAt(parent, index);
         parent.setCustomView(null);
+    }
+
+    @Override
+    public boolean needsCustomLayoutForChildren() {
+        return true;
     }
 
     @Override
